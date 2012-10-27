@@ -170,9 +170,20 @@ class TargetCollection(object):
         return target
 
 
+class VariableCollection(dict):
+
+    def __init__(self, **kwargs):
+        dict.__init__(self)
+        self.update(kwargs)
+
+    def __setitem__(self, key, value):
+        if key not in self:
+            dict.__setitem__(self, key, value)
+
+
 targets = TargetCollection()
 rules = {}
-variables = {}
+variables = VariableCollection(**os.environ)
 
 
 def flatten(*args):
@@ -213,7 +224,7 @@ def main(argv=sys.argv):
             if not key in variables:
                 logger.error('%s is not a variable', key)
             logger.debug('%s=%r', key, value)
-            variables[key] = value
+            dict.__setitem__(variables, key, value)
             continue
         targets_.append(arg)
     if not targets_:
