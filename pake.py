@@ -170,15 +170,15 @@ class TargetCollection(object):
         return target
 
 
-class VariableCollection(dict):
+class VariableCollection(object):
 
     def __init__(self, **kwargs):
-        dict.__init__(self)
-        self.update(kwargs)
+        for key, value in kwargs.iteritems():
+            setattr(self, key, value)
 
-    def __setitem__(self, key, value):
-        if key not in self:
-            dict.__setitem__(self, key, value)
+    def __setattr__(self, key, value):
+        if not hasattr(self, key):
+            object.__setattr__(self, key, value)
 
 
 targets = TargetCollection()
@@ -221,10 +221,10 @@ def main(argv=sys.argv):
         match = re.match(r'(?P<key>\w+)=(?P<value>.*)\Z', arg)
         if match:
             key, value = match.group('key', 'value')
-            if not key in variables:
+            if not hasattr(variables, key):
                 logger.error('%s is not a variable', key)
             logger.debug('%s=%r', key, value)
-            dict.__setitem__(variables, key, value)
+            object.__setattr__(variables, key, value)
             continue
         targets_.append(arg)
     if not targets_:
