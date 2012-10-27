@@ -14,11 +14,11 @@ import sys
 logger = logging.getLogger(__name__)
 
 
-class Error(RuntimeError):
+class PakeError(RuntimeError):
     pass
 
 
-class AmbiguousRuleError(Error):
+class AmbiguousRuleError(PakeError):
 
     def __init__(self, name):
         self.name = name
@@ -27,7 +27,7 @@ class AmbiguousRuleError(Error):
         return '%r matches multiple rules' % (self.name,)
 
 
-class BuildError(RuntimeError):
+class BuildError(PakeError):
 
     def __init__(self, target, message):
         self.target = target
@@ -37,7 +37,7 @@ class BuildError(RuntimeError):
         return '%s: %s' % (self.target.name, self.message)
 
 
-class DuplicateTargetError(RuntimeError):
+class DuplicateTargetError(PakeError):
 
     def __init__(self, target):
         self.target = target
