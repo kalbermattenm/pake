@@ -171,7 +171,6 @@ class TargetCollection(object):
 
 
 targets = TargetCollection()
-constants = {}
 rules = {}
 variables = {}
 
