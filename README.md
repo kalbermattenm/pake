@@ -17,6 +17,8 @@ Why use pake?
 
 * pake uses timestamps to determine when to rebuild targets, just like make.
 
+* pake is fast. As many tasks can be accomplished in pure Python, without spawning a subprocess, pake is faster than make.
+
 * pake supports normal targets, virtual targets, variables, and rules.
 
 * pake automatically creates 'clean' targets for you, just pass the `-c` option.
