@@ -73,7 +73,7 @@ class Target(object):
                 self.timestamp = -1
         if self.timestamp < timestamp:
             self.debug('action')
-            if self._makedirs:
+            if self._makedirs and not dry_run:
                 self.makedirs(os.path.dirname(self.name))
             if self.action:
                 if self.action.__doc__:
