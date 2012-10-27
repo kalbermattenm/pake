@@ -55,3 +55,5 @@ def o(name, match):
 
 pake.main()
 ```
+
+For a more complete examples, see [build.py for ol3](https://github.com/twpayne/ol3/blob/pure-python-build/build.py) and the [equivalent Makefile](https://github.com/twpayne/ol3/blob/pure-python-build/Makefile).
