@@ -215,7 +215,8 @@ def main(argv=sys.argv):
                              action='count', dest='logging_level')
     option_parser.set_defaults(logging_level=0)
     options, args = option_parser.parse_args(argv[1:])
-    logging.basicConfig(level=logging.INFO - 10 * options.logging_level)
+    logging.basicConfig(format='%(asctime)s %(name)s: %(message)s',
+                        level=logging.INFO - 10 * options.logging_level)
     targets_ = []
     for arg in args:
         match = re.match(r'(?P<key>\w+)=(?P<value>.*)\Z', arg)
