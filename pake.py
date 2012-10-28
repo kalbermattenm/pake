@@ -84,6 +84,7 @@ class Target(object):
         return self.timestamp
 
     def cp(self, *args):
+        args = flatten_expand_list(args)
         dest = args.pop()
         for arg in args:
             shutil.copy(arg, dest)
@@ -109,6 +110,7 @@ class Target(object):
         self.logger.info(*args, **kwargs)
 
     def makedirs(self, path):
+        path = path % vars(variables)
         if path and not os.path.exists(path):
             os.makedirs(path)
 
