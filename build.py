@@ -19,5 +19,10 @@ def pep8(t):
     t.run('pyflakes', SRC)
 
 
+@pake.target('pypi-upload', 'all', phony=True)
+def pypi_upload(t):
+    t.run('python', 'setup.py', 'sdist', 'upload')
+
+
 if __name__ == '__main__':
     pake.main()
