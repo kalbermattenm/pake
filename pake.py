@@ -113,7 +113,7 @@ class Target(object):
             os.makedirs(path)
 
     def output(self, *args, **kwargs):
-        args = list(flatten(args))
+        args = flatten_expand_list(args)
         self.info(' '.join(args))
         try:
             output = subprocess.check_output(args, **kwargs)
@@ -124,7 +124,7 @@ class Target(object):
             self.error(e)
 
     def run(self, *args, **kwargs):
-        args = list(flatten(args))
+        args = flatten_expand_list(args)
         self.info(' '.join(args))
         try:
             subprocess.check_call(args, **kwargs)
@@ -196,6 +196,10 @@ def flatten(*args):
             yield arg
 
 
+def flatten_expand_list(*args):
+    return list(arg % vars(variables) for arg in flatten(args))
+
+
 def ifind(*paths):
     for path in paths:
         for dirpath, dirnames, names in os.walk(path):
@@ -243,7 +247,7 @@ def main(argv=sys.argv):
 
 
 def output(*args):
-    args = list(flatten(args))
+    args = flatten_expand_list(args)
     logger.debug(' '.join(args))
     return subprocess.check_output(args)
 
