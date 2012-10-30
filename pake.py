@@ -112,6 +112,15 @@ class Target(object):
     def error(self, message):
         raise BuildError(self, message)
 
+    def graph(self, f, visited):
+        if self in visited:
+            return
+        visited.add(self)
+        for dependency in self.dependencies:
+            target = targets.get(dependency)
+            f.write('\t"%s" -> "%s";\n' % (self.name, target.name))
+            target.graph(f, visited)
+
     def info(self, *args, **kwargs):
         self.logger.info(*args, **kwargs)
 
@@ -219,6 +228,8 @@ def main(argv=sys.argv):
     option_parser = optparse.OptionParser()
     option_parser.add_option('-c', '--clean',
                              action='store_true')
+    option_parser.add_option('-g', '--graph',
+                             action='store_true')
     option_parser.add_option('-n', '--dry-run', '--just-print', '--recon',
                              action='store_true')
     option_parser.add_option('-r', '--really',
@@ -247,6 +258,10 @@ def main(argv=sys.argv):
             target = targets.get(target)
             if options.clean:
                 target.clean(really=options.really, recurse=True)
+            elif options.graph:
+                sys.stdout.write('digraph "%s" {\n' % (target.name,))
+                target.graph(sys.stdout, set())
+                sys.stdout.write('}\n')
             else:
                 target.build(dry_run=options.dry_run)
     except BuildError as e:
