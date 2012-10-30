@@ -9,6 +9,7 @@ import subprocess
 import time
 import shutil
 import sys
+import urllib2
 
 
 logger = logging.getLogger(__name__)
@@ -102,6 +103,11 @@ class Target(object):
 
     def debug(self, *args, **kwargs):
         self.logger.debug(*args, **kwargs)
+
+    def download(self, url):
+        content = urllib2.urlopen(url).read()
+        with open(self.name, 'w') as f:
+            f.write(content)
 
     def error(self, message):
         raise BuildError(self, message)
