@@ -67,3 +67,17 @@ pake.main()
 ```
 
 For a more complete examples, see [build.py for ol3](https://github.com/twpayne/ol3/blob/pure-python-build/build.py) and the [equivalent Makefile](https://github.com/twpayne/ol3/blob/pure-python-build/Makefile).
+
+
+Generating dependency graphs
+----------------------------
+
+pake can generate dependency graphs automatically in Dot format, just pass the ``-g`` option.  For example, the dependency graph for the above example is:
+
+```
+digraph "all" {
+	"all" -> "hello";
+	"hello" -> "hello.o";
+	"hello.o" -> "hello.c";
+}
+```
