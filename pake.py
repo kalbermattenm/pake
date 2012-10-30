@@ -2,13 +2,13 @@
 
 import collections
 import logging
-from optparse import OptionParser
+import optparse
 import os
 import re
-import subprocess
-import time
 import shutil
+import subprocess
 import sys
+import time
 import urllib2
 
 
@@ -216,7 +216,7 @@ def ifind(*paths):
 
 
 def main(argv=sys.argv):
-    option_parser = OptionParser()
+    option_parser = optparse.OptionParser()
     option_parser.add_option('-c', '--clean',
                              action='store_true')
     option_parser.add_option('-n', '--dry-run', '--just-print', '--recon',
