@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 
 import collections
+import contextlib
 import logging
 import optparse
 import os
 import re
 import shutil
 import subprocess
+import tempfile
 import sys
 import time
 import urllib2
@@ -84,6 +86,14 @@ class Target(object):
             self.timestamp = timestamp or time.time()
         return self.timestamp
 
+    @contextlib.contextmanager
+    def chdir(self, dir):
+        cwd = os.getcwd()
+        dir = dir % vars(variables)
+        os.chdir(dir)
+        yield dir
+        os.chdir(cwd)
+
     def cp(self, *args):
         args = flatten_expand_list(args)
         dest = args.pop()
@@ -148,6 +158,12 @@ class Target(object):
         except subprocess.CalledProcessError as e:
             self.clean(recurse=False)
             self.error(e)
+
+    @contextlib.contextmanager
+    def tempdir(self):
+        tempdir = tempfile.mkdtemp()
+        yield tempdir
+        shutil.rmtree(tempdir, ignore_errors=True)
 
     def touch(self):
         if os.path.exists(self.name):
