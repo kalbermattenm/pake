@@ -29,7 +29,7 @@ Why use pake?
 Example
 -------
 
-This example demonstrates most of pake's features.  You can find it in the `example` directory where you can run it with the command `./build.py`.  To clean up, run `./build.py -c`.
+This example demonstrates most of pake's features.  You can find it in the `examples/simple` directory where you can run it with the command `./build.py`.  To clean up, run `./build.py -c`.
 
 ```python
 #!/usr/bin/env python
