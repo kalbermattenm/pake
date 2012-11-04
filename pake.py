@@ -92,9 +92,11 @@ class Target(object):
         dir = dir % vars(variables)
         self.info('cd %s', dir)
         os.chdir(dir)
-        yield dir
-        self.info('cd %s', cwd)
-        os.chdir(cwd)
+        try:
+            yield dir
+        finally:
+            self.info('cd %s', cwd)
+            os.chdir(cwd)
 
     def cp(self, *args):
         args = flatten_expand_list(args)
