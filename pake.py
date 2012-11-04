@@ -90,20 +90,24 @@ class Target(object):
     def chdir(self, dir):
         cwd = os.getcwd()
         dir = dir % vars(variables)
+        self.info('cd %s', dir)
         os.chdir(dir)
         yield dir
+        self.info('cd %s', cwd)
         os.chdir(cwd)
 
     def cp(self, *args):
         args = flatten_expand_list(args)
         dest = args.pop()
         for arg in args:
+            self.info('cp %s %s', arg, dest)
             shutil.copy(arg, dest)
 
     def cp_r(self, *args):
         args = flatten_expand_list(args)
         dest = args.pop()
         for arg in args:
+            self.info('cp -r %s %s', arg, dest)
             shutil.copytree(arg, dest)
 
     def clean(self, really=False, recurse=True):
@@ -143,6 +147,7 @@ class Target(object):
     def makedirs(self, path):
         path = path % vars(variables)
         if path and not os.path.exists(path):
+            self.info('mkdir -p %s', path)
             os.makedirs(path)
 
     def output(self, *args, **kwargs):
@@ -169,6 +174,7 @@ class Target(object):
     def tempdir(self):
         tempdir = tempfile.mkdtemp()
         yield tempdir
+        self.info('rm -rf %s', tempdir)
         shutil.rmtree(tempdir, ignore_errors=True)
 
     def touch(self):
