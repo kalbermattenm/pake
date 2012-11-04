@@ -163,6 +163,12 @@ class Target(object):
             self.clean(recurse=False)
             self.error(e)
 
+    def rm_rf(self, *args):
+        args = flatten_expand_list(args)
+        for arg in args:
+            self.info('rm -rf %s', arg)
+            shutil.rmtree(arg, ignore_errors=True)
+
     def run(self, *args, **kwargs):
         args = flatten_expand_list(args)
         self.info(' '.join(args))
