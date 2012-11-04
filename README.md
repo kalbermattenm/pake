@@ -25,6 +25,8 @@ Why use pake?
 
 * pake exposes its underlying data model so you can easily script it for custom build logic.
 
+* pake gives you the full power of Python to script your build actions.  For example, you can use exceptions to gracefully handle errors and clean up temporary files when an action fails.
+
 
 Example
 -------
