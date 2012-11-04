@@ -100,6 +100,12 @@ class Target(object):
         for arg in args:
             shutil.copy(arg, dest)
 
+    def cp_r(self, *args):
+        args = flatten_expand_list(args)
+        dest = args.pop()
+        for arg in args:
+            shutil.copytree(arg, dest)
+
     def clean(self, really=False, recurse=True):
         if (self._clean or really) and not self.precious:
             self.info('clean')
