@@ -175,9 +175,12 @@ class Target(object):
     @contextlib.contextmanager
     def tempdir(self):
         tempdir = tempfile.mkdtemp()
-        yield tempdir
-        self.info('rm -rf %s', tempdir)
-        shutil.rmtree(tempdir, ignore_errors=True)
+        self.info('mkdir -p %s', tempdir)
+        try:
+            yield tempdir
+        finally:
+            self.info('rm -rf %s', tempdir)
+            shutil.rmtree(tempdir, ignore_errors=True)
 
     def touch(self):
         if os.path.exists(self.name):
