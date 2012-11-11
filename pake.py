@@ -18,6 +18,27 @@ import urllib2
 logger = logging.getLogger(__name__)
 
 
+if hasattr(subprocess, 'check_output'):
+    check_output = subprocess.check_output
+else:
+    # Copied with minor modifications from the Python source code
+    # http://hg.python.org/cpython/file/9cb1366b251b/Lib/subprocess.py#l549
+    def check_output(*popenargs, **kwargs):
+        if 'stdout' in kwargs:
+            raise ValueError(
+                'stdout argument not allowed, it will be overridden.')
+        process = subprocess.Popen(stdout=subprocess.PIPE,
+                                   *popenargs, **kwargs)
+        output, unused_err = process.communicate()
+        retcode = process.poll()
+        if retcode:
+            cmd = kwargs.get("args")
+            if cmd is None:
+                cmd = popenargs[0]
+            raise subprocess.CalledProcessError(retcode, cmd, output=output)
+        return output
+
+
 class PakeError(RuntimeError):
     pass
 
@@ -161,7 +182,7 @@ class Target(object):
         args = flatten_expand_list(args)
         self.info(' '.join(args))
         try:
-            output = subprocess.check_output(args, **kwargs)
+            output = check_output(args, **kwargs)
             with open(self.name, 'w') as f:
                 f.write(output)
         except subprocess.CalledProcessError as e:
@@ -316,7 +337,7 @@ def main(argv=sys.argv):
 def output(*args):
     args = flatten_expand_list(args)
     logger.debug(' '.join(args))
-    return subprocess.check_output(args)
+    return check_output(args)
 
 
 def rule(pattern):
