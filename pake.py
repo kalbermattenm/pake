@@ -130,7 +130,7 @@ class Target(object):
     def download(self, url, md5=None):
         content = urllib2.urlopen(url).read()
         if md5 and hashlib.md5(content).hexdigest() != md5:
-            raise pake.BuildError(t, 'corrupt download')
+            raise BuildError(self, 'corrupt download')
         # FIXME Python on Windoze corrupts the content when writing it
         # FIXME probably something to do with encodings
         with open(self.name, 'w') as f:
