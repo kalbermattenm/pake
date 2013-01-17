@@ -176,6 +176,10 @@ class Target(object):
             self.info('mkdir -p %s', path)
             os.makedirs(path)
 
+    def newer(self, *args):
+        args = flatten_expand_list(args)
+        return [arg for arg in args if targets.get(arg).timestamp > self.timestamp]
+
     def output(self, *args, **kwargs):
         args = flatten_expand_list(args)
         self.info(' '.join(args))
