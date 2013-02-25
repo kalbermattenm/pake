@@ -36,36 +36,39 @@ This example demonstrates most of pake's features.  You can find it in the `exam
 ```python
 #!/usr/bin/env python
 
-import pake
+from pake import Target, main, rule, target, variables, virtual
 
 # Variables can be overridden on the command line or with environment
 # variables.
-pake.variables.CC = 'gcc'
+variables.CC = 'gcc'
 
 # Normal Python constants can be used
 SRC = 'hello.c'
 
 # Virtual targets are like make's .PHONY targets.
-pake.virtual('all', 'hello')
+virtual('all', 'hello')
+
 
 # Normal targets consist of the target followed by a list of dependencies,
 # the decorated function is the action to build the target.
-@pake.target('hello', 'hello.o')
+@target('hello', 'hello.o')
 def hello(t):
     t.run('%(CC)s', '-o', t.name, t.dependencies)
+
 
 # Rules match on regular expressions and return a target.  The decorated
 # function receives the target name and the regexp match result and returns a
 # new target.
-@pake.rule(r'(?P<filename>.*)\.o\Z')
+@rule(r'(?P<filename>.*)\.o\Z')
 def o(name, match):
     def action(t):
         t.run('%(CC)s', '-c', '-o', t.name, t.dependencies)
     dependencies = '%(filename)s.c' % match.groupdict()
-    return pake.Target(name, action=action, dependencies=dependencies)       
+    return Target(name, action=action, dependencies=dependencies)
+
 
 # Don't forget to call main()!
-pake.main()
+main()
 ```
 
 For a more complete examples, see [build.py for OpenLayers 3](https://github.com/openlayers/ol3/blob/master/build.py) and the [equivalent (now outdated) Makefile](https://github.com/openlayers/ol3/blob/5fb39ff30dd27ab0e13c2b468c3feb69789ed4ed/Makefile).
