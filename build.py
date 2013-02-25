@@ -3,7 +3,7 @@
 from pake import ifind, main, target, virtual
 
 
-SRC = 'pake.py'
+SRC = [path for path in ifind('.') if path.endswith('.py')]
 
 
 virtual('all', 'pep8', 'pyflakes')
