@@ -68,7 +68,7 @@ def o(name, match):
 pake.main()
 ```
 
-For a more complete examples, see [build.py for ol3](https://github.com/twpayne/ol3/blob/pure-python-build/build.py) and the [equivalent Makefile](https://github.com/twpayne/ol3/blob/pure-python-build/Makefile).
+For a more complete examples, see [build.py for OpenLayers 3](https://github.com/openlayers/ol3/blob/master/build.py) and the [equivalent (now outdated) Makefile](https://github.com/openlayers/ol3/blob/5fb39ff30dd27ab0e13c2b468c3feb69789ed4ed/Makefile).
 
 
 Generating dependency graphs
