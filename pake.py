@@ -178,7 +178,8 @@ class Target(object):
 
     def newer(self, *args):
         args = flatten_expand_list(args)
-        return [arg for arg in args if targets.get(arg).timestamp > self.timestamp]
+        return [arg for arg in args
+                if targets.get(arg).timestamp > self.timestamp]
 
     def output(self, *args, **kwargs):
         args = flatten_expand_list(args)
