@@ -148,9 +148,11 @@ class Target(object):
     def debug(self, *args, **kwargs):
         self.logger.debug(*args, **kwargs)
 
-    def download(self, url, md5=None):
+    def download(self, url, md5=None, sha1=None):
         content = urllib2.urlopen(url).read()
         if md5 and hashlib.md5(content).hexdigest() != md5:
+            raise BuildError(self, 'corrupt download')
+        if sha1 and hashlib.sha1(content).hexdigest() != sha1:
             raise BuildError(self, 'corrupt download')
         with open(self.name, 'wb') as f:
             f.write(content)
